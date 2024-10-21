@@ -1,0 +1,48 @@
+/* src/components/Sidebar.css */
+.sidebar {
+  width: 200px;
+  background-color: #337bb6;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -200px;
+  transition: left 0.3s ease-in-out;
+  z-index: 999;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+/* Add padding to ensure the sidebar content is pushed below the header */
+.sidebar-content {
+  padding-top: 80px; /* Adjust this value based on your header height */
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  padding: 15px 20px;
+  color: white; /* Text color for list items */
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Change text color for links */
+.sidebar ul li a {
+  color: white; /* White text color for links */
+  text-decoration: none; /* Remove underline */
+  display: block; /* Make the link fill the entire list item */
+}
+
+.sidebar ul li a:hover {
+  background-color: #286497; /* Change background on hover */
+}
+
+.sidebar ul li:active {
+  transform: scale(0.98);
+}

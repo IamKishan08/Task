@@ -1,0 +1,39 @@
+/* src/components/Master.css */
+.master-content {
+    padding: 20px;
+  }
+  
+  .add-server-btn {
+    font-weight: bold;
+    float: right;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: #337bb6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px; /* Add some border radius */
+  }
+  
+  .add-server-btn:hover {
+    background-color: #285e8e; /* Darker shade on hover */
+  }
+  
+  .server-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add space above the table */
+  }
+  
+  .server-table th,
+  .server-table td {
+    border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center; /* Centering all table content */
+  }
+  
+  .server-table th {
+    background-color: #337bb6;
+    color: white;
+  }
+  

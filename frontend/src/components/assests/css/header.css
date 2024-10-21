@@ -1,0 +1,29 @@
+/* src/components/Header.css */
+.header {
+    display: flex;
+    align-items: center;
+    background-color: #337bb6;
+    padding: 10px;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .hamburger-menu {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .header-title {
+    font-size: 24px;
+    margin-left: 20px;
+    transition: margin-left 0.3s ease-in-out;
+  }
+  

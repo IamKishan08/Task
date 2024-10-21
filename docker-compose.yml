@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build: ./DockerPython
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DB=${MYSQL_DB}
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  react-app:
+    build: ./frontend
+    container_name: react-app
+    ports:
+      - "8080:80"
+    depends_on:
+      - flask-app
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:
+
+networks:
+  app-network:

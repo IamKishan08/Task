@@ -1,0 +1,59 @@
+/* src/components/ViewTask.css */
+div{
+    margin-top: 15px;
+    border-top: 10px;
+    color: #285e8e;
+    font-weight: bold;
+  }
+  .view-task-content {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dropdown-container {
+      margin-bottom: 15px;
+    }
+    
+    .dropdown-container label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .dropdown-container select {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ddd; /* Add border for inputs */
+      border-radius: 4px; /* Rounded corners for inputs */
+    }
+    
+    .view-tasks-btn {
+      padding: 10px 15px;
+      background-color: #337bb6;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px; /* Add some border radius */
+    }
+    
+    .view-tasks-btn:hover {
+      background-color: #285e8e; /* Darker shade on hover */
+    }
+    
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) {
+      .view-task-content {
+        padding: 15px;
+      }
+    
+      .dropdown-container select {
+        font-size: 14px; /* Slightly smaller text on small screens */
+      }
+    
+      .view-tasks-btn {
+        width: 100%; /* Full width for button on small screens */
+      }
+    }
+    

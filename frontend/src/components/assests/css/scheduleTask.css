@@ -1,0 +1,39 @@
+/* src/components/ScheduleTask.css */
+.schedule-task-content {
+    padding: 20px;
+  }
+  
+  .add-task-btn {
+    font-weight: bold;
+    float: right;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    background-color: #337bb6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px; /* Add some border radius */
+  }
+  
+  .add-task-btn:hover {
+    background-color: #285e8e; /* Darker shade on hover */
+  }
+  
+  .task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Add space above the table */
+  }
+  
+  .task-table th,
+.task-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center; /* Centering all table content */
+}
+  
+  .task-table th {
+    background-color: #337bb6;
+    color: white;
+  }
+  
