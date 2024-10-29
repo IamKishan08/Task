@@ -1,10 +1,10 @@
 import React from 'react';
 import './assests/css/popupForm.css';
 
-const PopupForm = ({ isOpen, onClose, formFields, onSubmit }) => {
+const PopupForm = ({ isOpen, onClose, formFields, onSubmit, defaultValues }) => {
   if (!isOpen) return null;
 
-  // Handle form submission
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -12,9 +12,9 @@ const PopupForm = ({ isOpen, onClose, formFields, onSubmit }) => {
     formFields.fields.forEach((field) => {
       let value = e.target[field.name].value;
       
-      // Add ':00' for start_time and end_time if the time format is 'HH:MM'
+    
       if (field.name === 'start_time' || field.name === 'end_time') {
-        if (value.length === 5) { // If format is 'HH:MM'
+        if (value.length === 5) { 
           value += ':00';
         }
       }
@@ -47,7 +47,7 @@ const PopupForm = ({ isOpen, onClose, formFields, onSubmit }) => {
                   type={field.type}
                   name={field.name}
                   id={field.name}
-                  defaultValue={field.defaultValue}
+                  defaultValue={defaultValues ? defaultValues[field.name] : ''}
                   required
                 />
               )}

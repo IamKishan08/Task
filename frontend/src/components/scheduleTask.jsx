@@ -3,14 +3,13 @@ import PopupForm from './popupForm';
 import './assests/css/scheduleTask.css';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from '../api'; // Import Axios instance to make API calls
+import axios from '../api'; 
 
 function ScheduleTask() {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [editTask, setEditTask] = useState(null);
 
-  // Fetch tasks from the API when the component mounts
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -63,20 +62,19 @@ function ScheduleTask() {
 
     try {
       if (editTask) {
-        // Update task
+       
         await axios.put(`schedule/update_status/${editTask.id}`, newTask);
         setTasks(tasks.map((task) => (task.id === editTask.id ? { ...task, ...newTask, id: editTask.id } : task)));
       } else {
-        // Add new task
         const response = await axios.post('schedule/add_schedule', newTask);
         setTasks([...tasks, { ...newTask, id: response.data.id }]);
       }
     } catch (error) {
-       // Check for a specific error message or status code indicating unmatched master data
+     
        if (error.response && error.response.status === 404) {
             alert("The provided data does not match existing master data. Please ensure the master data is correct.");
         } else {
-      // General error handler for other cases
+     
               console.error('Error saving task:', error.response ? error.response.data : error.message);
               alert("An error occurred while saving the task. Please try again.");
     }
@@ -96,22 +94,35 @@ function ScheduleTask() {
 
   const formFields = {
     title: editTask ? 'Edit Task' : 'Add Task',
-    fields: [
-      { label: 'Customer Name', name: 'customer_name', type: 'text', defaultValue: editTask?.customer_name || '' },
-      { label: 'Group', name: 'group', type: 'text', defaultValue: editTask?.group || '' },
-      { label: 'Location', name: 'location', type: 'text', defaultValue: editTask?.location || '' },
-      { label: 'Schedule Date', name: 'schedule_date', type: 'date', defaultValue: editTask?.schedule_date || '' },
-      { label: 'Start Time', name: 'start_time', type: 'time', defaultValue: editTask?.start_time || '' },
-      { label: 'End Time', name: 'end_time', type: 'time', defaultValue: editTask?.end_time || '' },
-      {
-        label: 'Status',
-        name: 'status',
-        type: 'select',
-        options: ['Scheduled', 'Not patched', 'Completed'],
-        defaultValue: editTask?.status || 'Scheduled',
-      },
-    ],
+    fields: editTask
+      ? [
+          
+          {
+            label: 'Status',
+            name: 'status',
+            type: 'select',
+            options: ['Scheduled', 'Not patched', 'Completed'],
+            defaultValue: editTask?.status || 'Scheduled',
+          },
+        ]
+      : [
+          
+          { label: 'Customer Name', name: 'customer_name', type: 'text', defaultValue: '' },
+          { label: 'Group', name: 'group', type: 'text', defaultValue: '' },
+          { label: 'Location', name: 'location', type: 'text', defaultValue: '' },
+          { label: 'Schedule Date', name: 'schedule_date', type: 'date', defaultValue: '' },
+          { label: 'Start Time', name: 'start_time', type: 'time', defaultValue: '' },
+          { label: 'End Time', name: 'end_time', type: 'time', defaultValue: '' },
+          {
+            label: 'Status',
+            name: 'status',
+            type: 'select',
+            options: ['Scheduled', 'Not patched', 'Completed'],
+            defaultValue: 'Scheduled',
+          },
+        ],
   };
+  
 
   return (
     <div className="schedule-task-content">

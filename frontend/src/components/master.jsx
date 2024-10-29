@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from '../api'; // Use the Axios instance
+import axios from '../api'; 
 import PopupForm from './popupForm';
 import './assests/css/master.css';
 import { IconButton } from '@mui/material';
@@ -8,10 +8,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 function Master() {
   const [isPopupOpen, setPopupOpen] = useState(false);
-  const [editingRow, setEditingRow] = useState(null); // To track the row being edited
+  const [editingRow, setEditingRow] = useState(null); 
   const [tableData, setTableData] = useState([]);
 
-  // Fetch all master records when the component loads
+ 
   useEffect(() => {
     fetchMasters();
   }, []);
@@ -19,32 +19,32 @@ function Master() {
   const fetchMasters = async () => {
     try {
       const response = await axios.get('/master/get_masters');
-      setTableData(response.data); // Assuming the API returns an array of master records
+      setTableData(response.data); 
     } catch (error) {
       console.error('Error fetching master data:', error);
     }
   };
 
   const openPopup = (row) => {
-    setEditingRow(row); // Set row to edit
+    setEditingRow(row);
     setPopupOpen(true);
   };
 
   const closePopup = () => {
-    setEditingRow(null); // Clear editing state
+    setEditingRow(null); 
     setPopupOpen(false);
   };
 
   const handleSubmit = async (formData) => {
     try {
       if (editingRow) {
-        // Update existing master
+        
         await axios.put(`/master/update_master/${editingRow.id}`, formData);
       } else {
-        // Add a new master
+       
         await axios.post('/master/add_master', formData);
       }
-      fetchMasters(); // Refresh the table data
+      fetchMasters(); 
       closePopup();
     } catch (error) {
       console.error('Error submitting form:', error.response ? error.response.data : error.message);
@@ -55,7 +55,7 @@ function Master() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/master/delete_master/${id}`);
-      fetchMasters(); // Refresh the table data
+      fetchMasters(); 
     } catch (error) {
       console.error('Error deleting master data:', error);
     }
@@ -74,9 +74,9 @@ function Master() {
       { label: 'Start Time', name: 'start_time', type: 'time' },
       { label: 'End Time', name: 'end_time', type: 'time' },
       { label: 'Group', name: 'group', type: 'text' },
-      { label: 'Location', name: 'location', type: 'text' }, // Add missing Location field
+      { label: 'Location', name: 'location', type: 'text' }, 
     ],
-    defaultValues: editingRow, // Pre-fill form with selected row data if editing
+    defaultValues: editingRow, 
   };
 
   return (
@@ -99,7 +99,7 @@ function Master() {
             <th>Start Time</th>
             <th>End Time</th>
             <th>Group</th>
-            <th>Location</th> {/* Add Location column */}
+            <th>Location</th> 
             <th>Actions</th>
           </tr>
         </thead>
@@ -117,7 +117,7 @@ function Master() {
               <td>{row.start_time}</td>
               <td>{row.end_time}</td>
               <td>{row.group}</td>
-              <td>{row.location}</td> {/* Display location */}
+              <td>{row.location}</td> 
               <td>
                 <IconButton onClick={() => openPopup(row)} aria-label="edit">
                   <EditIcon />
@@ -131,12 +131,13 @@ function Master() {
         </tbody>
       </table>
 
-      {/* Popup Form */}
+    
       <PopupForm
         isOpen={isPopupOpen}
         onClose={closePopup}
         formFields={formFields}
         onSubmit={handleSubmit}
+        defaultValues={editingRow}
       />
     </div>
   );
