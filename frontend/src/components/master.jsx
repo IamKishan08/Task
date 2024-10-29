@@ -47,7 +47,8 @@ function Master() {
       fetchMasters(); // Refresh the table data
       closePopup();
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error('Error submitting form:', error.response ? error.response.data : error.message);
+      alert("An error occurred while saving the master data. Please try again.");
     }
   };
 

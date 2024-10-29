@@ -15,13 +15,12 @@ function ScheduleTask() {
     const fetchTasks = async () => {
       try {
         const response = await axios.get('schedule/get_schedules');
-        const schedules = response.data.schedules; // Accessing the 'schedules' array
+        const schedules = response.data.schedules;
 
-        // Check if schedules is an array
         if (Array.isArray(schedules)) {
           const formattedTasks = schedules.map((task) => ({
-            id: task.schedule_id, // Use schedule_id as the unique id
-            customer_name: task.owner_name, // Map the properties accordingly
+            id: task.schedule_id,
+            customer_name: task.owner_name,
             group: task.server_details.group,
             location: task.server_details.location,
             schedule_date: task.schedule_date,
@@ -46,42 +45,49 @@ function ScheduleTask() {
     setPopupOpen(true);
   };
 
-  const closePopup = () => setPopupOpen(false);
+  const closePopup = () => {
+    setEditTask(null);
+    setPopupOpen(false);
+  };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
+  const handleSubmit = async (formData) => {
     const newTask = {
-      customer_name: formData.get('customer_name'), // Always get from formData for new task
-      group: formData.get('group'),
-      location: formData.get('location'),
-      schedule_date: formData.get('schedule_date'),
-      start_time: formData.get('start_time'),
-      end_time: formData.get('end_time'),
-      status: formData.get('status'),
+      customer_name: formData.customer_name,
+      group: formData.group,
+      location: formData.location,
+      schedule_date: formData.schedule_date,
+      start_time: formData.start_time,
+      end_time: formData.end_time,
+      status: formData.status,
     };
-  
+
     try {
       if (editTask) {
-        // Update existing task
+        // Update task
         await axios.put(`schedule/update_status/${editTask.id}`, newTask);
-        setTasks(tasks.map((task) => (task.id === editTask.id ? { ...task, ...newTask } : task)));
+        setTasks(tasks.map((task) => (task.id === editTask.id ? { ...task, ...newTask, id: editTask.id } : task)));
       } else {
-        // Create new task
+        // Add new task
         const response = await axios.post('schedule/add_schedule', newTask);
         setTasks([...tasks, { ...newTask, id: response.data.id }]);
       }
     } catch (error) {
-      console.error('Error saving task:', error);
+       // Check for a specific error message or status code indicating unmatched master data
+       if (error.response && error.response.status === 404) {
+            alert("The provided data does not match existing master data. Please ensure the master data is correct.");
+        } else {
+      // General error handler for other cases
+              console.error('Error saving task:', error.response ? error.response.data : error.message);
+              alert("An error occurred while saving the task. Please try again.");
+    }
     } finally {
       closePopup();
     }
   };
-  
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`schedule/${id}`); // Adjust API endpoint
+      await axios.delete(`schedule/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error('Error deleting task:', error);
@@ -90,23 +96,22 @@ function ScheduleTask() {
 
   const formFields = {
     title: editTask ? 'Edit Task' : 'Add Task',
-    fields: editTask
-      ? [
-          // Only show the status field when editing
-          { label: 'Status', name: 'status', type: 'select', options: ['Scheduled', 'Not patched', 'Completed'], defaultValue: editTask?.status || 'Scheduled' },
-        ]
-      : [
-          // Show all fields when adding a new task
-          { label: 'Customer Name', name: 'customer_name', type: 'text', defaultValue: '' },
-          { label: 'Group', name: 'group', type: 'text', defaultValue: '' },
-          { label: 'Location', name: 'location', type: 'text', defaultValue: '' },
-          { label: 'Schedule Date', name: 'schedule_date', type: 'date', defaultValue: '' },
-          { label: 'Start Time', name: 'start_time', type: 'time', defaultValue: '' },
-          { label: 'End Time', name: 'end_time', type: 'time', defaultValue: '' },
-          { label: 'Status', name: 'status', type: 'select', options: ['Scheduled', 'Not patched', 'Completed'], defaultValue: 'Scheduled' },
-        ],
+    fields: [
+      { label: 'Customer Name', name: 'customer_name', type: 'text', defaultValue: editTask?.customer_name || '' },
+      { label: 'Group', name: 'group', type: 'text', defaultValue: editTask?.group || '' },
+      { label: 'Location', name: 'location', type: 'text', defaultValue: editTask?.location || '' },
+      { label: 'Schedule Date', name: 'schedule_date', type: 'date', defaultValue: editTask?.schedule_date || '' },
+      { label: 'Start Time', name: 'start_time', type: 'time', defaultValue: editTask?.start_time || '' },
+      { label: 'End Time', name: 'end_time', type: 'time', defaultValue: editTask?.end_time || '' },
+      {
+        label: 'Status',
+        name: 'status',
+        type: 'select',
+        options: ['Scheduled', 'Not patched', 'Completed'],
+        defaultValue: editTask?.status || 'Scheduled',
+      },
+    ],
   };
-  
 
   return (
     <div className="schedule-task-content">
